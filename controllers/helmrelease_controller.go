@@ -396,8 +396,10 @@ func (r *HelmReleaseReconciler) reconcileRelease(ctx context.Context, hr *v2.Hel
 			// Propagate any test error if not marked ignored.
 			if testErr != nil && !remediation.MustIgnoreTestFailures(hr.Spec.GetTest().IgnoreFailures) {
 				testsPassing := conditions.Get(hr, v2.TestSuccessCondition)
-				conditions.MarkFalse(hr, v2.ReleasedCondition, testsPassing.Reason, testsPassing.Message)
-				err = testErr
+				if testsPassing != nil {
+					conditions.MarkFalse(hr, v2.ReleasedCondition, testsPassing.Reason, testsPassing.Message)
+					err = testErr
+				}
 			}
 		}
 	}
