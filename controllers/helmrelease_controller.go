@@ -264,8 +264,8 @@ func (r *HelmReleaseReconciler) reconcile(ctx context.Context, obj *v2.HelmRelea
 	if len(obj.Spec.DependsOn) > 0 {
 		if err := r.checkDependencies(ctx, obj); err != nil {
 			msg := fmt.Sprintf("dependencies do not meet ready condition (%s), retrying in %s", err.Error(), r.requeueDependency.String())
-			conditions.MarkFalse(obj, meta.ReadyCondition, meta.FailedReason, msg)
-			r.Eventf(ctx, obj, events.EventSeverityError, meta.FailedReason, msg)
+			conditions.MarkFalse(obj, meta.ReadyCondition, v2.GetHelmChartFailedReason, msg)
+			r.Eventf(ctx, obj, events.EventSeverityError, v2.GetHelmChartFailedReason, msg)
 			log.Info(msg)
 			// Exponential backoff would cause execution to be prolonged too much,
 			// instead we requeue on a fixed interval.
