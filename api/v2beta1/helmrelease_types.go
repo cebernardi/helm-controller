@@ -294,9 +294,9 @@ type Remediation interface {
 	MustIgnoreTestFailures(bool) bool
 	MustRemediateLastFailure() bool
 	GetStrategy() RemediationStrategy
-	GetFailureCount(hr HelmRelease) int64
+	GetFailureCount(hr *HelmRelease) int64
 	IncrementFailureCount(hr *HelmRelease)
-	RetriesExhausted(hr HelmRelease) bool
+	RetriesExhausted(hr *HelmRelease) bool
 }
 
 // Install holds the configuration for Helm install actions performed for this
@@ -446,7 +446,7 @@ func (in InstallRemediation) GetStrategy() RemediationStrategy {
 }
 
 // GetFailureCount gets the failure count.
-func (in InstallRemediation) GetFailureCount(hr HelmRelease) int64 {
+func (in InstallRemediation) GetFailureCount(hr *HelmRelease) int64 {
 	return hr.Status.InstallFailures
 }
 
@@ -456,7 +456,7 @@ func (in InstallRemediation) IncrementFailureCount(hr *HelmRelease) {
 }
 
 // RetriesExhausted returns true if there are no remaining retries.
-func (in InstallRemediation) RetriesExhausted(hr HelmRelease) bool {
+func (in InstallRemediation) RetriesExhausted(hr *HelmRelease) bool {
 	return in.Retries >= 0 && in.GetFailureCount(hr) > int64(in.Retries)
 }
 
@@ -625,7 +625,7 @@ func (in UpgradeRemediation) GetStrategy() RemediationStrategy {
 }
 
 // GetFailureCount gets the failure count.
-func (in UpgradeRemediation) GetFailureCount(hr HelmRelease) int64 {
+func (in UpgradeRemediation) GetFailureCount(hr *HelmRelease) int64 {
 	return hr.Status.UpgradeFailures
 }
 
@@ -635,7 +635,7 @@ func (in UpgradeRemediation) IncrementFailureCount(hr *HelmRelease) {
 }
 
 // RetriesExhausted returns true if there are no remaining retries.
-func (in UpgradeRemediation) RetriesExhausted(hr HelmRelease) bool {
+func (in UpgradeRemediation) RetriesExhausted(hr *HelmRelease) bool {
 	return in.Retries >= 0 && in.GetFailureCount(hr) > int64(in.Retries)
 }
 

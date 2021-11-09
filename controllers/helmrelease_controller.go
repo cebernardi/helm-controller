@@ -348,7 +348,7 @@ func (r *HelmReleaseReconciler) reconcileRelease(ctx context.Context, hr *v2.Hel
 		}
 
 		// Fail if install retries are exhausted.
-		if hr.Spec.GetInstall().GetRemediation().RetriesExhausted(*hr) {
+		if hr.Spec.GetInstall().GetRemediation().RetriesExhausted(hr) {
 			err = fmt.Errorf("install retries exhausted")
 			conditions.MarkFalse(hr, meta.ReadyCondition, released.Reason, err.Error())
 			r.Eventf(ctx, hr, events.EventSeverityError, released.Reason, err.Error())
@@ -357,7 +357,7 @@ func (r *HelmReleaseReconciler) reconcileRelease(ctx context.Context, hr *v2.Hel
 
 		// Fail if there is a release and upgrade retries are exhausted.
 		// This avoids failing after an upgrade uninstall remediation strategy.
-		if rel != nil && hr.Spec.GetUpgrade().GetRemediation().RetriesExhausted(*hr) {
+		if rel != nil && hr.Spec.GetUpgrade().GetRemediation().RetriesExhausted(hr) {
 			err = fmt.Errorf("upgrade retries exhausted")
 			conditions.MarkFalse(hr, meta.ReadyCondition, released.Reason, err.Error())
 			r.Eventf(ctx, hr, events.EventSeverityError, released.Reason, err.Error())
@@ -406,7 +406,7 @@ func (r *HelmReleaseReconciler) reconcileRelease(ctx context.Context, hr *v2.Hel
 		// Increment failure count for deployment action.
 		remediation.IncrementFailureCount(hr)
 		// Remediate deployment failure if necessary.
-		if !remediation.RetriesExhausted(*hr) || remediation.MustRemediateLastFailure() {
+		if !remediation.RetriesExhausted(hr) || remediation.MustRemediateLastFailure() {
 			if util.ReleaseRevision(rel) <= releaseRevision {
 				log.Info("skipping remediation, no new release revision created")
 			} else {

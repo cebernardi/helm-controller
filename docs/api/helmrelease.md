@@ -173,7 +173,7 @@ Defaults to the namespace of the HelmRelease.</p>
 </td>
 <td>
 <em>(Optional)</em>
-<p>DependsOn may contain a dependency.CrossNamespaceDependencyReference slice with
+<p>DependsOn may contain a meta.NamespacedObjectReference slice with
 references to HelmRelease resources that must be ready before this HelmRelease
 can be reconciled.</p>
 </td>
@@ -779,7 +779,7 @@ Defaults to the namespace of the HelmRelease.</p>
 </td>
 <td>
 <em>(Optional)</em>
-<p>DependsOn may contain a dependency.CrossNamespaceDependencyReference slice with
+<p>DependsOn may contain a meta.NamespacedObjectReference slice with
 references to HelmRelease resources that must be ready before this HelmRelease
 can be reconciled.</p>
 </td>

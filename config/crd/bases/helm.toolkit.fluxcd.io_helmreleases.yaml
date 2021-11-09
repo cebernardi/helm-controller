@@ -102,7 +102,7 @@ spec:
                 - spec
                 type: object
               dependsOn:
-                description: DependsOn may contain a dependency.CrossNamespaceDependencyReference slice with references to HelmRelease resources that must be ready before this HelmRelease can be reconciled.
+                description: DependsOn may contain a meta.NamespacedObjectReference slice with references to HelmRelease resources that must be ready before this HelmRelease can be reconciled.
                 items:
                   description: NamespacedObjectReference contains enough information to locate the referenced Kubernetes resource object in any namespace.
                   properties:
