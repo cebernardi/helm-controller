@@ -827,12 +827,6 @@ func HelmReleaseAttempted(hr *HelmRelease, revision string, releaseRevision int,
 	return hr, changed
 }
 
-func resetFailureCounts(hr *HelmRelease) {
-	hr.Status.Failures = 0
-	hr.Status.InstallFailures = 0
-	hr.Status.UpgradeFailures = 0
-}
-
 const (
 	// SourceIndexKey is the key used for indexing HelmReleases based on
 	// their sources.
@@ -856,6 +850,18 @@ type HelmRelease struct {
 	Spec HelmReleaseSpec `json:"spec,omitempty"`
 	// +kubebuilder:default:={"observedGeneration":-1}
 	Status HelmReleaseStatus `json:"status,omitempty"`
+}
+
+// IncrementFailureCounter adds one to the failure counter.
+func (in *HelmRelease) IncrementFailureCounter() {
+	in.Status.Failures++
+}
+
+// ResetFailureCounter sets all failure counters back to zero.
+func (in *HelmRelease) ResetFailureCounter() {
+	in.Status.Failures = 0
+	in.Status.InstallFailures = 0
+	in.Status.UpgradeFailures = 0
 }
 
 // GetValues unmarshals the raw values to a map[string]interface{} and returns
